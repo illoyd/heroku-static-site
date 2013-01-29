@@ -1,7 +1,11 @@
+##
+# To use, comment out one of the blocks below!
+
 use Rack::Static, 
   :urls => ["/images", "/js", "/css"],
   :root => "public"
 
+# To always serve one kind of file...
 run lambda { |env|
   [
     200, 
@@ -12,3 +16,10 @@ run lambda { |env|
     File.open('public/index.html', File::RDONLY)
   ]
 }
+
+# To use the public directory as a basis
+use Rack::Rewrite do
+  rewrite '/', '/index.html'
+end
+
+run Rack::Directory.new('public')
